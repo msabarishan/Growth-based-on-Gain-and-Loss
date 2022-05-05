@@ -6,7 +6,7 @@ import plotly.express as px
 import altair as alt
 
 st.write("""
-# Ergodicity Experiment
+# Wealth progression Assignment
 """)
 
 np.random.seed(9)
@@ -67,6 +67,25 @@ def run_experiment(i_w, f_g,s_g,p_g):
 
     st.altair_chart(chart1,use_container_width=True)
     
+    df_gain1 = df_gain[(df_gain.index==60)]
+    df_gain1 =df_gain1.drop(['index'],axis=1)
+    df_gain1 = df_gain1.T
+    max=df_gain1.max(numeric_only=True).max()
+    min=df_gain1.min(numeric_only=True).min()
+    
+    st.subheader('End Wealth Distribution')
+    chart2 = alt.Chart(df_gain1).transform_joinaggregate(
+    total='count(*)'
+    ).transform_calculate(
+    pct='1 / datum.total'
+    ).mark_bar().encode(
+    alt.X('60:Q', bin=True),
+    alt.Y('sum(pct):Q', axis=alt.Axis(format='%'))
+    )
+    
+
+    st.altair_chart(chart2,use_container_width=True)
+    
     
 sl_i_w = st.sidebar.slider('Initial Wealth', 1000, 1000000, 1000)
 sl_f_g = st.sidebar.slider('Fast Growth %', 0.0, 1.0, 0.5)
@@ -98,8 +117,6 @@ if st.sidebar.button("Run Experiment", "run-exp-btn"):
 # sns.lineplot(x=df_ens.index, y=df_ens["ens_avg"], )
 
 # sns.lineplot(x=df_gain.index, y=df_gain["p_gain_100"])
-
-
 
 # Altair codes
 # Ensemble Average using Altair
