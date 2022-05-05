@@ -11,12 +11,12 @@ st.write("""
 
 np.random.seed(9)
 
-def run_experiment(initial_amount, gain_pct, loss_pct, leverage):
+def run_experiment(i_w, f_g,s_g,p_g):
     # num of time steps
     t_N = 60
 
     # num of people
-    p_N = 100000
+    p_N = 1000
 
     evt_data = {}
     gain_data = {}
@@ -26,10 +26,10 @@ def run_experiment(initial_amount, gain_pct, loss_pct, leverage):
     # generate data for every person
     for i in range(p_N):
         # start with initial amount as leverage
-        person_gain = initial_amount
+        person_gain = i_w
         
         # generate random events of gain / loss for N time steps
-        evts = np.random.randint(0,2, t_N)
+        evts = np.random.binomial(1,p_g,size=t_N)
         
         # temp state store for interim gains
         gains = [person_gain]
@@ -37,9 +37,9 @@ def run_experiment(initial_amount, gain_pct, loss_pct, leverage):
         # calc gain progression
         for e in evts:
             if e == 0:
-                person_gain = (person_gain * (1 - leverage)) + (person_gain * leverage * (1 - loss_pct))
+                person_gain = (person_gain * (1 + s_g))
             else:
-                person_gain = (person_gain * (1 - leverage)) + (person_gain * leverage * (1 + gain_pct))
+                person_gain = (person_gain * (1 + f_g))
             
             gains.append(person_gain)
 
@@ -52,12 +52,9 @@ def run_experiment(initial_amount, gain_pct, loss_pct, leverage):
 
     df_gain = pd.DataFrame(gain_data)
     df_gain = df_gain.reset_index()
-    
-    df_gain1 = df_gain[["index","p_gain_100"]]
 
     df_ens = pd.DataFrame()
     df_ens["ens_avg"] = df_gain.apply(np.mean, axis=1)
-    df_ens["ens_med"] = df_gain.apply(np.median, axis=1)
     df_ens = df_ens.reset_index()
 
     data_load_state.text('Experiment Completed!')
@@ -70,47 +67,25 @@ def run_experiment(initial_amount, gain_pct, loss_pct, leverage):
 
     st.altair_chart(chart1,use_container_width=True)
     
-    data_load_state.text('Experiment Completed!')
     
-    st.subheader('Specific case')
-    chart2=alt.Chart(df_gain1).mark_line().encode(                             
-    alt.X('index', title='timestep'),
-    alt.Y('p_gain_100', title='gain at timestep')
-    )# p_gain_100
-
-    st.altair_chart(chart2,use_container_width=True)
-    
-    st.subheader('Histogram')
-    residue= df_gain.iloc[-1].value_counts().reset_index()
-    residue.rename(columns = {60 : 'box'}, inplace = True)
-    
-    chart3 = alt.Chart(residue).mark_bar().encode(
-       alt.X('index',title='index'),
-       alt.Y('box',title='box')
-       ). properties(
-                width=350,
-                height=300,
-                title='Histogram')
-    st.altair_chart(chart3)
-    
-sl_initial_amount = st.sidebar.slider('Initial Amount', 1000, 1000000, 1000)
-sl_gain_pct = st.sidebar.slider('Gain %', 0.0, 1.0, 0.5)
-sl_loss_pct = st.sidebar.slider('Loss %', 0.0, 1.0, 0.4)
-sl_leverage = st.sidebar.slider('Leverage', 0.0, 1.0, 1.0)
+sl_i_w = st.sidebar.slider('Initial Wealth', 1000, 1000000, 1000)
+sl_f_g = st.sidebar.slider('Fast Growth %', 0.0, 1.0, 0.5)
+sl_s_g = st.sidebar.slider('Slow Growth %', 0.0, 1.0, 0.5)
+sl_p_g = st.sidebar.slider('Probaility of Fast Growth', 0.0, 1.0, 1.0)
 
 st.write(f"""
 ## Experiment Parameters
 
-* Initial Amount = ${sl_initial_amount}
-* Gain = {sl_gain_pct}
-* Loss = {sl_loss_pct}
-* Leverage = {sl_leverage}
+* Initial Wealth = ${sl_i_w}
+* Fast Growth % = {sl_f_g}
+* Slow Growth % = {sl_s_g}
+* Probability of Fast Growth = {sl_p_g}
 * Time Steps = 60
-* Number of Sequences = 100,000
+* Number of Sequences = 1000
 """)
 
 if st.sidebar.button("Run Experiment", "run-exp-btn"):
-    run_experiment(sl_initial_amount, sl_gain_pct, sl_loss_pct, sl_leverage)
+    run_experiment(sl_w, sl_f_g, sl_s_g, sl_p_g)
 
 # initial_amount = 1000
 # gain_pct = 0.5
