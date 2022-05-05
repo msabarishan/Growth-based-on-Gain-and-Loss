@@ -80,7 +80,7 @@ def run_experiment(i_w, f_g,s_g,p_g):
     pct='1 / datum.total'
     ).mark_bar().encode(
     alt.X('60:Q', bin = alt.BinParams(maxbins = 10)),
-    alt.Y('sum(pct):Q', axis=alt.Axis(format='%')),scale=alt.Scale(domain=[min, max])
+    alt.Y('sum(pct):Q', axis=alt.Axis(format='%'))
     )
     
 
