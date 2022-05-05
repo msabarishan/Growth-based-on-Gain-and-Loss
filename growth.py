@@ -85,7 +85,7 @@ st.write(f"""
 """)
 
 if st.sidebar.button("Run Experiment", "run-exp-btn"):
-    run_experiment(sl_w, sl_f_g, sl_s_g, sl_p_g)
+    run_experiment(sl_i_w, sl_f_g, sl_s_g, sl_p_g)
 
 # initial_amount = 1000
 # gain_pct = 0.5
