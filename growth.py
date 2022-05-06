@@ -56,7 +56,7 @@ def run_experiment(i_w, f_g,s_g,p_g):
     df_ens = pd.DataFrame()
     df_ens["ens_avg"] = df_gain.apply(np.mean, axis=1)
     df_ens = df_ens.reset_index()
-    df_melt=pd.melt(df_gain, id_vars=['index'], value_vars=['p_gain_1':'p_gain_1000'],
+    df_melt=pd.melt(df_gain, id_vars=['index'], value_vars=['p_gain_1','p_gain_2','p_gain_3','p_gain_1000'],
         var_name='person', value_name='wealth')
 
     data_load_state.text('Experiment Completed!')
