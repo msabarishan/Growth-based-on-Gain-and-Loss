@@ -93,9 +93,11 @@ def run_experiment(i_w, f_g,s_g,p_g):
     st.altair_chart(chart2+meadian_line,use_container_width=True)
     
     st.subheader('Wealth Distribution Progression')
-    chart3=alt.Chart(df_gain1).mark_line().encode(
+    chart3=alt.Chart(df_melt).mark_line().encode(
     x='index',
     y='wealth',
+    color='person',
+    strokeDash='person'
     )
     st.altair_chart(chart3,use_container_width=True)
     
