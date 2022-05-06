@@ -82,9 +82,9 @@ def run_experiment(i_w, f_g,s_g,p_g):
     alt.X('60:Q', bin = alt.Bin(maxbins = 10)),
     alt.Y('sum(pct):Q', axis=alt.Axis(format='%'),title='Percentage of Total individuals')
     )
-    meadian_line = alt.Chart(df_gain1).mark_rule().encode(
+    meadian_line = alt.Chart(df_gain1).mark_rule(color ='red').encode(
     x=alt.X('mean(60):Q', title='End Wealth(With Mean marked in Red'),
-    size=alt.value(5)
+    size=alt.value(1)
     )
 
     st.altair_chart(chart2+meadian_line,use_container_width=True)
