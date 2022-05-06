@@ -56,9 +56,11 @@ def run_experiment(i_w, f_g,s_g,p_g):
     df_ens = pd.DataFrame()
     df_ens["ens_avg"] = df_gain.apply(np.mean, axis=1)
     df_ens = df_ens.reset_index()
+    df_melt=pd.melt(df_gain, id_vars=['index'], value_vars=['p_gain_1':'p_gain_1000'],
+        var_name='person', value_name='wealth')
 
     data_load_state.text('Experiment Completed!')
-    st.dataframe(df_gain)
+    st.dataframe(df_melt)
     
     st.subheader('Ensemble Average')
     chart1=alt.Chart(df_ens).mark_line().encode(                             
@@ -89,6 +91,14 @@ def run_experiment(i_w, f_g,s_g,p_g):
     )
 
     st.altair_chart(chart2+meadian_line,use_container_width=True)
+    
+    st.subheader('Wealth Distribution Progression')
+    alt.Chart(df_gain1).mark_line().encode(
+    x='date',
+    y='price',
+    color='symbol',
+    strokeDash='symbol',
+    )
     
     
 sl_i_w = st.sidebar.slider('Initial Wealth', 1000, 1000000, 1000)
