@@ -60,6 +60,8 @@ def run_experiment(i_w, f_g,s_g,p_g):
         var_name='person', value_name='wealth')
 
     data_load_state.text('Experiment Completed!')
+    
+    st.subheader('Only for reference')
     st.dataframe(df_melt)
     
     st.subheader('Ensemble Average')
