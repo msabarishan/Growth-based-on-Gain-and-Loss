@@ -94,7 +94,7 @@ def run_experiment(i_w, f_g,s_g,p_g):
     
     st.subheader('Wealth Distribution Progression')
     chart3=alt.Chart(df_melt).mark_line().encode(
-    x='index',
+    alt.X('index',title= 'progression of time')
     y='wealth',
     color='person',
     strokeDash='person'
