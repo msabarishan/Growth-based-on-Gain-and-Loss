@@ -58,6 +58,7 @@ def run_experiment(i_w, f_g,s_g,p_g):
     df_ens = df_ens.reset_index()
 
     data_load_state.text('Experiment Completed!')
+    st.dataframe(df_gain)
     
     st.subheader('Ensemble Average')
     chart1=alt.Chart(df_ens).mark_line().encode(                             
@@ -83,7 +84,7 @@ def run_experiment(i_w, f_g,s_g,p_g):
     alt.Y('sum(pct):Q', axis=alt.Axis(format='%'),title='Percentage of Total individuals')
     )
     meadian_line = alt.Chart(df_gain1).mark_rule(color ='red').encode(
-    x=alt.X('mean(60):Q', title='End Wealth(With Mean marked in Red'),
+    x=alt.X('mean(60):Q', title='End Wealth(With Mean marked in Red)'),
     size=alt.value(1)
     )
 
