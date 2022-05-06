@@ -94,10 +94,9 @@ def run_experiment(i_w, f_g,s_g,p_g):
     
     st.subheader('Wealth Distribution Progression')
     alt.Chart(df_gain1).mark_line().encode(
-    x='date',
-    y='price',
-    color='symbol',
-    strokeDash='symbol',
+    x='index',
+    y='wealth',
+    color='person'
     )
     
     
