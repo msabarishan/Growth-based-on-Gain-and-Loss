@@ -79,12 +79,15 @@ def run_experiment(i_w, f_g,s_g,p_g):
     ).transform_calculate(
     pct='1 / datum.total'
     ).mark_bar().encode(
-    alt.X('60:O', bin = alt.Bin(maxbins = 10)),
+    alt.X('60:Q', bin = alt.Bin(maxbins = 10)),
     alt.Y('sum(pct):Q', axis=alt.Axis(format='%'))
     )
-    
+    meadian_line = alt.Chart(df_gain1).mark_rule().encode(
+    x=alt.X('mean(60):Q', title='Height'),
+    size=alt.value(5)
+    )
 
-    st.altair_chart(chart2,use_container_width=True)
+    st.altair_chart(chart2+meadian_line,use_container_width=True)
     
     
 sl_i_w = st.sidebar.slider('Initial Wealth', 1000, 1000000, 1000)
