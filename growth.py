@@ -93,12 +93,13 @@ def run_experiment(i_w, f_g,s_g,p_g):
     st.altair_chart(chart2+meadian_line,use_container_width=True)
     
     st.subheader('Wealth Distribution Progression')
-    alt.Chart(df_gain1).mark_line().encode(
+    chart3=alt.Chart(df_gain1).mark_line().encode(
     x='index',
     y='wealth',
-    color='person'
+    color='person',
+    strokeDash='person'
     )
-    
+    st.altair_chart(chart3,use_container_width=True)
     
 sl_i_w = st.sidebar.slider('Initial Wealth', 1000, 1000000, 1000)
 sl_f_g = st.sidebar.slider('Fast Growth %', 0.0, 1.0, 0.5)
