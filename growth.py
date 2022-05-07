@@ -77,6 +77,7 @@ def run_experiment(i_w, f_g,s_g,p_g):
     df_gain1 = df_gain1.T
     max=df_gain1.max(numeric_only=True).max()
     min=df_gain1.min(numeric_only=True).min()
+    df_dif = (max-min)/10
     
     st.subheader('End Wealth Distribution')
     chart2 = alt.Chart(df_gain1).transform_joinaggregate(
@@ -84,7 +85,7 @@ def run_experiment(i_w, f_g,s_g,p_g):
     ).transform_calculate(
     pct='1 / datum.total'
     ).mark_bar().encode(
-    alt.X('60:Q', bin = alt.Bin(maxbins = 10),scale=alt.Scale(domain=(3000,15000))),
+    alt.X('60:Q', bin=alt.Bin(extent=[min, max], step=df_dif))),
     alt.Y('sum(pct):Q', axis=alt.Axis(format='%'),title='Percentage of Total individuals')
          )
     meadian_line = alt.Chart(df_gain1).mark_rule(color ='red').encode(
