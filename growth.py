@@ -86,8 +86,7 @@ def run_experiment(i_w, f_g,s_g,p_g):
     pct='1 / datum.total'
     ).mark_bar().encode(
     alt.X('60:Q', bin=alt.Bin(extent=[min, max], step=df_dif))),
-    alt.Y('sum(pct):Q', axis=alt.Axis(format='%'),title='Percentage of Total individuals')
-         )
+    alt.Y('sum(pct):Q', axis=alt.Axis(format='%'),title='Percentage of Total individuals'))
     meadian_line = alt.Chart(df_gain1).mark_rule(color ='red').encode(
     x=alt.X('mean(60):Q', title='End Wealth(With Mean marked in Red)'),
     size=alt.value(1)
