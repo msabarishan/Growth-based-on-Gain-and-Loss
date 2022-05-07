@@ -103,8 +103,8 @@ def run_experiment(i_w, f_g,s_g,p_g):
     st.altair_chart(chart3,use_container_width=True)
     
 sl_i_w = st.sidebar.slider('Initial Wealth', 1000, 1000000, 1000)
-sl_f_g = st.sidebar.slider('Faster Growth %', 0, 100, 30)
-sl_s_g = st.sidebar.slider('Slower Growth %', -100, 100, 5)
+sl_f_g = st.sidebar.slider('Faster Growth %', 0, 100, 20)
+sl_s_g = st.sidebar.slider('Slower Growth %', -100, 100, 2)
 sl_p_g = st.sidebar.slider('Probability of Fast Growth', 0.0, 1.0, 0.05)
 
 st.write(f"""
