@@ -103,7 +103,7 @@ def run_experiment(i_w, f_g,s_g,p_g):
     
 sl_i_w = st.sidebar.slider('Initial Wealth', 1000, 1000000, 1000)
 sl_f_g = st.sidebar.slider('Fast Growth %', 0, 100, 30)
-sl_s_g = st.sidebar.slider('Slow Growth %', 0, 100, 5)
+sl_s_g = st.sidebar.slider('Slow Growth %', -30, 100, 5)
 sl_p_g = st.sidebar.slider('Probaility of Fast Growth', 0.0, 1.0, 0.05)
 
 st.write(f"""
