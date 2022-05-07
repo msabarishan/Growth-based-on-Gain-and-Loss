@@ -14,7 +14,8 @@ np.random.seed(9)
 def run_experiment(i_w, f_g,s_g,p_g):
     # num of time steps
     t_N = 60
-
+    f_g=f_g/100
+    s_g=s_g/100
     # num of people
     p_N = 1000
 
@@ -101,9 +102,9 @@ def run_experiment(i_w, f_g,s_g,p_g):
     st.altair_chart(chart3,use_container_width=True)
     
 sl_i_w = st.sidebar.slider('Initial Wealth', 1000, 1000000, 1000)
-sl_f_g = st.sidebar.slider('Fast Growth %', 0.0, 1.0, 0.5)
-sl_s_g = st.sidebar.slider('Slow Growth %', 0.0, 1.0, 0.5)
-sl_p_g = st.sidebar.slider('Probaility of Fast Growth', 0.0, 1.0, 1.0)
+sl_f_g = st.sidebar.slider('Fast Growth %', 0, 100, 30)
+sl_s_g = st.sidebar.slider('Slow Growth %', 0, 100, 5)
+sl_p_g = st.sidebar.slider('Probaility of Fast Growth', 0.0, 1.0, 0.05)
 
 st.write(f"""
 ## Experiment Parameters
