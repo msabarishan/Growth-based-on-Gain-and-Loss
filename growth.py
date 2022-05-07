@@ -56,14 +56,12 @@ def run_experiment(i_w, f_g,s_g,p_g):
     df_ens = pd.DataFrame()
     df_ens["ens_avg"] = df_gain.apply(np.mean, axis=1)
     df_ens = df_ens.reset_index()
-    df_melt=pd.melt(df_gain, id_vars=['index'],
+    df_melt=pd.melt(df_gain, id_vars=['index'],  # This code will convert all the columns data except mentioned in id_vars into a column
         var_name='person', value_name='wealth',)
 
     data_load_state.text('Experiment Completed!')
     
-    st.subheader('Only for reference')
-    st.dataframe(df_melt)
-    
+  
     st.subheader('Ensemble Average')
     chart1=alt.Chart(df_ens).mark_line().encode(                             
     alt.X('index', title='timestep'),
