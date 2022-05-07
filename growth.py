@@ -84,11 +84,11 @@ def run_experiment(i_w, f_g,s_g,p_g):
     ).transform_calculate(
     pct='1 / datum.total'
     ).mark_bar().encode(
-    alt.X('60:Q', bin = alt.Bin(maxbins = 10),scale=alt.Scale(zero=False)),
+    alt.X('60:Q', bin = alt.Bin(maxbins = 10),scale=alt.Scale(domain=(min,max))),
     alt.Y('sum(pct):Q', axis=alt.Axis(format='%'),title='Percentage of Total individuals')
          )
     meadian_line = alt.Chart(df_gain1).mark_rule(color ='red').encode(
-    x=alt.X('mean(60):Q', title='End Wealth(With Mean marked in Red)',scale=alt.Scale(zero=False)),
+    x=alt.X('mean(60):Q', title='End Wealth(With Mean marked in Red)',scale=alt.Scale(domain=(min,max))),
     size=alt.value(1)
     )
 
@@ -103,9 +103,9 @@ def run_experiment(i_w, f_g,s_g,p_g):
     st.altair_chart(chart3,use_container_width=True)
     
 sl_i_w = st.sidebar.slider('Initial Wealth', 1000, 1000000, 1000)
-sl_f_g = st.sidebar.slider('Fast Growth %', 0, 100, 30)
-sl_s_g = st.sidebar.slider('Slow Growth %', -30, 100, 5)
-sl_p_g = st.sidebar.slider('Probaility of Fast Growth', 0.0, 1.0, 0.05)
+sl_f_g = st.sidebar.slider('Faster Growth %', 0, 100, 30)
+sl_s_g = st.sidebar.slider('Slower Growth %', -100, 100, 5)
+sl_p_g = st.sidebar.slider('Probability of Fast Growth', 0.0, 1.0, 0.05)
 
 st.write(f"""
 ## Experiment Parameters
