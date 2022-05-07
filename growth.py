@@ -14,6 +14,7 @@ np.random.seed(9)
 def run_experiment(i_w, f_g,s_g,p_g):
     # num of time steps
     t_N = 60
+    
     f_g=f_g/100
     s_g=s_g/100
     # num of people
