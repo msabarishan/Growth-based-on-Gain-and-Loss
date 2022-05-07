@@ -98,7 +98,7 @@ def run_experiment(i_w, f_g,s_g,p_g):
     chart3=alt.Chart(df_melt).mark_line().encode(
     alt.X('index',title= 'progression of time'),
     alt.Y('wealth',title='Wealth'),
-    color='person',
+    color=alt.Color('person',legend = none)
     strokeDash='person'
     )
     st.altair_chart(chart3,use_container_width=True)
