@@ -31,7 +31,7 @@ def run_experiment(initial_wealth, fast_growth,slow_growth,prob_fastgrowth):
         person_gain = initial_wealth
         
         # generate random events of gain / loss for N time steps
-        evts = np.random.binomial(1,prob_fastgrowth,size=t_N)
+        evts = np.random.binomial(1,prob_fastgrowth,size=time)
         
         # temp state store for interim gains
         gains = [person_gain]
