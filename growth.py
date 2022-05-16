@@ -1,8 +1,8 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-# import seaborn as sns
-import plotly.express as px
+# import seaborn as sns (Not used in this project)
+# import plotly.express as px (Not used in this project)
 import altair as alt
 
 st.write("""
@@ -11,14 +11,14 @@ st.write("""
 
 np.random.seed(9)
 
-def run_experiment(i_w, f_g,s_g,p_g):
+def run_experiment(initial_wealth, fast_growth,slow_growth,prob_fastgrowth):
     # num of time steps
-    t_N = 60
+    time = 60
     
-    f_g=f_g/100
-    s_g=s_g/100
+    fast_growth=fast_growth/100
+    slow_growth=slow_growth/100
     # num of people
-    p_N = 1000
+    no_people = 1000
 
     evt_data = {}
     gain_data = {}
@@ -26,12 +26,12 @@ def run_experiment(i_w, f_g,s_g,p_g):
     data_load_state = st.text('Running Experiment ...')
 
     # generate data for every person
-    for i in range(p_N):
+    for i in range(no_people):
         # start with initial amount as leverage
-        person_gain = i_w
+        person_gain = initial_wealth
         
         # generate random events of gain / loss for N time steps
-        evts = np.random.binomial(1,p_g,size=t_N)
+        evts = np.random.binomial(1,prob_fastgrowth,size=t_N)
         
         # temp state store for interim gains
         gains = [person_gain]
@@ -39,9 +39,9 @@ def run_experiment(i_w, f_g,s_g,p_g):
         # calc gain progression
         for e in evts:
             if e == 0:
-                person_gain = (person_gain * (1 + s_g))
+                person_gain = (person_gain * (1 + slow_growth))
             else:
-                person_gain = (person_gain * (1 + f_g))
+                person_gain = (person_gain * (1 + fast_growth))
             
             gains.append(person_gain)
 
@@ -49,16 +49,16 @@ def run_experiment(i_w, f_g,s_g,p_g):
             
         # append gain data - events, gain progression, to a dictionary
         evt_data[f"p_evt_{i+1}"] = evts
-        gain_data[f"p_gain_{i+1}"] = gains
+        gain_data[f"prob_fastgrowthain_{i+1}"] = gains
 
 
-    df_gain = pd.DataFrame(gain_data)
-    df_gain = df_gain.reset_index()
+    dfast_growthain = pd.DataFrame(gain_data)
+    dfast_growthain = dfast_growthain.reset_index()
 
     df_ens = pd.DataFrame()
-    df_ens["ens_avg"] = df_gain.apply(np.mean, axis=1)
+    df_ens["ens_avg"] = dfast_growthain.apply(np.mean, axis=1)
     df_ens = df_ens.reset_index()
-    df_melt=pd.melt(df_gain, id_vars=['index'],  # This code will convert all the columns data except mentioned in id_vars into a column
+    df_melt=pd.melt(dfast_growthain, id_vars=['index'],  # This code will convert all the columns data except mentioned in id_vars into a column
         var_name='person', value_name='wealth',)
 
     data_load_state.text('Experiment Completed!')
@@ -72,22 +72,22 @@ def run_experiment(i_w, f_g,s_g,p_g):
 
     st.altair_chart(chart1,use_container_width=True)
     
-    df_gain1 = df_gain[(df_gain.index==60)]
-    df_gain1 =df_gain1.drop(['index'],axis=1)
-    df_gain1 = df_gain1.T
-    max=df_gain1.max(numeric_only=True).max()
-    min=df_gain1.min(numeric_only=True).min()
+    dfast_growthain1 = dfast_growthain[(dfast_growthain.index==60)]
+    dfast_growthain1 =dfast_growthain1.drop(['index'],axis=1)
+    dfast_growthain1 = dfast_growthain1.T
+    max=dfast_growthain1.max(numeric_only=True).max()
+    min=dfast_growthain1.min(numeric_only=True).min()
     df_dif = (max-min)/10
     
     st.subheader('End Wealth Distribution')
-    chart2 = alt.Chart(df_gain1).transform_joinaggregate(
+    chart2 = alt.Chart(dfast_growthain1).transform_joinaggregate(
     total='count(*)'
     ).transform_calculate(
     pct='1 / datum.total'
     ).mark_bar().encode(
     alt.X('60:Q', bin=alt.Bin(extent=[min, max], step=df_dif)),
     alt.Y('sum(pct):Q', axis=alt.Axis(format='%'),title='Percentage of Total individuals'))
-    meadian_line = alt.Chart(df_gain1).mark_rule(color ='red').encode(
+    meadian_line = alt.Chart(dfast_growthain1).mark_rule(color ='red').encode(
     x=alt.X('mean(60):Q', title='End Wealth(With Mean marked in Red)'),
     size=alt.value(1)
     )
@@ -102,41 +102,24 @@ def run_experiment(i_w, f_g,s_g,p_g):
     )
     st.altair_chart(chart3,use_container_width=True)
     
-sl_i_w = st.sidebar.slider('Initial Wealth', 1000, 1000000, 1000)
-sl_f_g = st.sidebar.slider('Faster Growth %', 0, 100, 20)
-sl_s_g = st.sidebar.slider('Slower Growth %', -100, 100, 2)
-sl_p_g = st.sidebar.slider('Probability of Fast Growth', 0.0, 1.0, 0.05)
+sl_initial_wealth = st.sidebar.slider('Initial Wealth', 1000, 1000000, 1000)
+sl_fast_growth = st.sidebar.slider('Faster Growth %', 0, 100, 20)
+sl_slow_growth = st.sidebar.slider('Slower Growth %', -100, 100, 2)
+sl_prob_fastgrowth = st.sidebar.slider('Probability of Fast Growth', 0.0, 1.0, 0.05)
 
 st.write(f"""
 ## Experiment Parameters
 
-* Initial Wealth = ${sl_i_w}
-* Fast Growth % = {sl_f_g}
-* Slow Growth % = {sl_s_g}
-* Probability of Fast Growth = {sl_p_g}
+* Initial Wealth = ${sl_initial_wealth}
+* Fast Growth % = {sl_fast_growth}
+* Slow Growth % = {sl_slow_growth}
+* Probability of Fast Growth = {sl_prob_fastgrowth}
 * Time Steps = 60
 * Number of Sequences = 1000
 """)
 
 if st.sidebar.button("Run Experiment", "run-exp-btn"):
-    run_experiment(sl_i_w, sl_f_g, sl_s_g, sl_p_g)
-
-# initial_amount = 1000
-# gain_pct = 0.5
-# loss_pct = 0.4
-# leverage = 1.0
-
-
-
-# fig.show()
-# sns.lineplot(x=df_ens.index, y=df_ens["ens_avg"], )
-
-# sns.lineplot(x=df_gain.index, y=df_gain["p_gain_100"])
-
-# Altair codes
-# Ensemble Average using Altair
-#value_vars=['p_gain_1','p_gain_2','p_gain_3','p_gain_1000']
-
+    run_experiment(sl_initial_wealth, sl_fast_growth, sl_slow_growth, sl_prob_fastgrowth)
 
     
 
