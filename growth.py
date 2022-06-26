@@ -6,7 +6,7 @@ import pandas as pd
 import altair as alt
 
 st.write("""
-# Wealth progression Assignment
+# Wealth Progression Experiment
 """)
 
 np.random.seed(9)
